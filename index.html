@@ -77,7 +77,6 @@
     50% { background-position: 100% 50%; }
   }
   
-  /* عنوان */
   h1 {
     text-align: center;
     font-size: 36px;
@@ -94,7 +93,6 @@
     margin-bottom: 40px;
   }
   
-  /* کارت‌های ویژگی */
   .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -126,7 +124,6 @@
     margin-bottom: 6px;
   }
   
-  /* بخش نصب */
   .install-section {
     background: rgba(15, 25, 45, 0.6);
     border: 1px solid rgba(74, 158, 255, 0.3);
@@ -143,7 +140,6 @@
     color: #6bb6ff;
   }
   
-  /* دکمه‌های دانلود */
   .download-btn {
     display: block;
     width: 100%;
@@ -194,7 +190,6 @@
     font-weight: normal;
   }
   
-  /* راهنما */
   .steps {
     margin-top: 25px;
     padding-top: 25px;
@@ -229,7 +224,6 @@
     font-size: 13px;
   }
   
-  /* هشدار */
   .warning {
     background: rgba(255, 193, 7, 0.1);
     border: 1px solid rgba(255, 193, 7, 0.3);
@@ -241,7 +235,8 @@
     line-height: 1.7;
   }
   
-  /* فوتر */
+  .warning a { color: #6bb6ff; }
+  
   footer {
     text-align: center;
     color: #5a7090;
@@ -251,12 +246,6 @@
     border-top: 1px solid rgba(74, 158, 255, 0.1);
   }
   
-  footer a {
-    color: #6bb6ff;
-    text-decoration: none;
-  }
-  
-  /* ریسپانسیو */
   @media (max-width: 600px) {
     h1 { font-size: 26px; }
     .logo-x { font-size: 60px; }
@@ -269,7 +258,6 @@
 
 <div class="container">
   
-  <!-- لوگو -->
   <div class="logo">
     <div class="logo-x">AI</div>
   </div>
@@ -277,35 +265,15 @@
   <h1>هوش مصنوعی رایگان</h1>
   <p class="subtitle">کاملاً هوشمند، بدون VPN، بدون محدودیت</p>
   
-  <!-- ویژگی‌ها -->
   <div class="features">
-    <div class="feature">
-      <span class="icon">✅</span>
-      کاملاً رایگان
-    </div>
-    <div class="feature">
-      <span class="icon">🛡️</span>
-      بدون VPN
-    </div>
-    <div class="feature">
-      <span class="icon">🧠</span>
-      کاملاً هوشمند
-    </div>
-    <div class="feature">
-      <span class="icon">♾️</span>
-      بدون محدودیت
-    </div>
-    <div class="feature">
-      <span class="icon">💻</span>
-      کد پایتون و همه زبان‌ها
-    </div>
-    <div class="feature">
-      <span class="icon">🔒</span>
-      حریم خصوصی کامل
-    </div>
+    <div class="feature"><span class="icon">✅</span>کاملاً رایگان</div>
+    <div class="feature"><span class="icon">🛡️</span>بدون VPN</div>
+    <div class="feature"><span class="icon">🧠</span>کاملاً هوشمند</div>
+    <div class="feature"><span class="icon">♾️</span>بدون محدودیت</div>
+    <div class="feature"><span class="icon">💻</span>کد پایتون و همه زبان‌ها</div>
+    <div class="feature"><span class="icon">🔒</span>حریم خصوصی کامل</div>
   </div>
   
-  <!-- بخش نصب -->
   <div class="install-section">
     <h2>📥 دانلود و نصب</h2>
     
@@ -314,7 +282,7 @@
         <span class="platform-icon">💻</span>
         <div class="platform-info">
           <div class="platform-name">ویندوز</div>
-          <div class="platform-size">Ollama + Qwen 2.5</div>
+          <div class="platform-size">Ollama + Qwen 2.5 — رایگان</div>
         </div>
       </div>
     </a>
@@ -324,7 +292,7 @@
         <span class="platform-icon">📱</span>
         <div class="platform-info">
           <div class="platform-name">اندروید</div>
-          <div class="platform-size">PocketPal AI</div>
+          <div class="platform-size">PocketPal AI — رایگان</div>
         </div>
       </div>
     </a>
@@ -334,44 +302,25 @@
         <span class="platform-icon">🍎</span>
         <div class="platform-info">
           <div class="platform-name">آیفون</div>
-          <div class="platform-size">MLC Chat</div>
+          <div class="platform-size">MLC Chat — رایگان</div>
         </div>
       </div>
     </a>
     
-    <!-- راهنما -->
     <div class="steps">
       <h3>📝 راهنمای نصب (ویندوز):</h3>
-      <div class="step">
-        <span class="step-num">۱</span>
-        <span>فایل <b>AI-Install.bat</b> رو دانلود کن</span>
-      </div>
-      <div class="step">
-        <span class="step-num">۲</span>
-        <span>روی فایل <b>دابل‌کلیک</b> کن</span>
-      </div>
-      <div class="step">
-        <span class="step-num">۳</span>
-        <span>اگه ویندوز هشدار داد، روی <b>More info</b> و بعد <b>Run anyway</b> کلیک کن</span>
-      </div>
-      <div class="step">
-        <span class="step-num">۴</span>
-        <span>صبر کن تا همه چیز خودکار نصب بشه (۵-۱۵ دقیقه)</span>
-      </div>
-      <div class="step">
-        <span class="step-num">۵</span>
-        <span>فایل <b>Run-AI</b> روی دسکتاپ ظاهر می‌شه</span>
-      </div>
-      <div class="step">
-        <span class="step-num">۶</span>
-        <span>روی <b>Run-AI</b> کلیک کن → هوش مصنوعی باز می‌شه! 🎉</span>
-      </div>
+      <div class="step"><span class="step-num">۱</span><span>فایل <b>AI-Install.bat</b> رو دانلود کن</span></div>
+      <div class="step"><span class="step-num">۲</span><span>روی فایل <b>دابل‌کلیک</b> کن</span></div>
+      <div class="step"><span class="step-num">۳</span><span>اگه ویندوز هشدار داد، روی <b>More info</b> و بعد <b>Run anyway</b> کلیک کن</span></div>
+      <div class="step"><span class="step-num">۴</span><span>صبر کن تا همه چیز خودکار نصب بشه (۵-۱۵ دقیقه)</span></div>
+      <div class="step"><span class="step-num">۵</span><span>فایل <b>Run-AI</b> روی دسکتاپ ظاهر می‌شه</span></div>
+      <div class="step"><span class="step-num">۶</span><span>روی <b>Run-AI</b> کلیک کن → هوش مصنوعی باز می‌شه! 🎉</span></div>
     </div>
     
     <div class="warning">
       <b>⚠️ پیش‌نیازها:</b><br>
       • پایتون ۳.۸ یا بالاتر باید نصب باشه<br>
-      • اگه نداری، از <a href="https://www.python.org/downloads/" target="_blank" style="color: #6bb6ff;">python.org</a> دانلود کن<br>
+      • اگه نداری، از <a href="https://www.python.org/downloads/" target="_blank">python.org</a> دانلود کن<br>
       • موقع نصب پایتون، تیک <b>"Add Python to PATH"</b> رو بزن
     </div>
   </div>
