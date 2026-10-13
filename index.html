@@ -147,7 +147,7 @@
 
 <script>
 // ============================================
-// 🔴 تنظیمات GitHub (توکن اینجا نیست!)
+// تنظیمات GitHub
 // ============================================
 let GITHUB = {
   username: "maryamvp200",
@@ -156,7 +156,7 @@ let GITHUB = {
   file: "market-data.json"
 };
 
-// توکن رو از localStorage بخون
+// توکن از localStorage
 try {
   const savedToken = localStorage.getItem("adrian_github_token");
   if (savedToken) GITHUB.token = savedToken;
@@ -242,7 +242,7 @@ async function saveData() {
 }
 
 // ============================================
-// Base64 UTF-8
+// Base64
 // ============================================
 function encodeBase64Utf8(str) { return btoa(unescape(encodeURIComponent(str))); }
 function decodeBase64Utf8(b64) { return decodeURIComponent(escape(atob(b64.replace(/\s/g, "")))); }
@@ -300,7 +300,7 @@ function renderHome() {
 
 function setToken() {
   const newToken = prompt(
-    "توکن GitHub رو وارد کن:\\n(از github.com/settings/tokens بساز)",
+    "توکن GitHub رو وارد کن:\n(از github.com/settings/tokens بساز)",
     GITHUB.token ? "***" + GITHUB.token.slice(-4) : ""
   );
   if (newToken && !newToken.startsWith("***")) {
@@ -490,7 +490,7 @@ async function doUpload() {
 }
 
 // ============================================
-// دانلود ZIP ✨ (تغییر اصلی)
+// دانلود ZIP ✨
 // ============================================
 async function downloadApp(appId) {
   const a = DATA.apps.find(x => x.id === appId);
@@ -536,7 +536,7 @@ async function downloadApp(appId) {
 نحوه استفاده:
 ${a.platform === "android"
   ? "۱. فایل APK رو روی گوشی نصب کن\n۲. اگه اجازه نصب خواست، اجازه بده"
-  : "۱. اگه .py هست: با python اجرا کن\n۲. اگه .pyw هست: دوبار کلیک کن\n۳. اگه .exe هست: دوبار کلیک کن\n۴. اگه .cpp یا .c هست: با کامپایلر کامپایل کن"
+  : "۱. اگه .py هست: با python اجرا کن\n۲. اگه .pyw هست: دوبار کلیک کن\n۳. اگه .exe هست: دوبار کلیک کن\n۴. اگه .cpp یا .c هست: کامپایل کن"
 }
 
 موفق باشی!
