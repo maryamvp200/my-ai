@@ -17,7 +17,9 @@
     background:
       radial-gradient(2px 2px at 20% 30%, #4a9eff, transparent),
       radial-gradient(2px 2px at 60% 70%, #6bb6ff, transparent),
-      radial-gradient(1px 1px at 50% 50%, #4a9eff, transparent);
+      radial-gradient(1px 1px at 50% 50%, #4a9eff, transparent),
+      radial-gradient(1px 1px at 80% 10%, #6bb6ff, transparent),
+      radial-gradient(2px 2px at 90% 60%, #4a9eff, transparent);
     background-size: 200% 200%;
     animation: stars 20s linear infinite;
     z-index: 0;
@@ -140,6 +142,9 @@
   <p>ساخته شده توسط <b>Adrian</b> با ❤️</p>
 </footer>
 
+<!-- کتابخانه ساخت ZIP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <script>
 // ============================================
 // 🔴 تنظیمات GitHub (توکن اینجا نیست!)
@@ -162,6 +167,9 @@ const UPLOAD_PASSWORD = "835556";
 let DATA = { apps: [], files: {}, uploadUnlocked: false };
 let _githubSha = null;
 
+// ============================================
+// لود از GitHub
+// ============================================
 async function loadData() {
   if (GITHUB.username && GITHUB.repo) {
     try {
@@ -175,7 +183,7 @@ async function loadData() {
         const parsed = JSON.parse(decodeBase64Utf8(json.content));
         DATA.apps = parsed.apps || [];
         DATA.files = parsed.files || {};
-        console.log("✅ لود شد");
+        console.log("✅ لود شد:", DATA.apps.length, "بازی");
         return;
       } else if (resp.status === 404) {
         console.log("ℹ️ بار اول");
@@ -193,6 +201,9 @@ async function loadData() {
   } catch (e) {}
 }
 
+// ============================================
+// ذخیره توی GitHub
+// ============================================
 async function saveData() {
   try {
     localStorage.setItem("adrian_market", JSON.stringify({
@@ -214,23 +225,31 @@ async function saveData() {
       } catch (e) {}
       const payload = { apps: DATA.apps, files: DATA.files };
       const content = encodeBase64Utf8(JSON.stringify(payload));
-      const body = { message: `آپدیت`, content: content };
+      const body = { message: `آپدیت - ${new Date().toLocaleString('fa-IR')}`, content: content };
       if (_githubSha) body.sha = _githubSha;
       const resp = await fetch(url, { method: "PUT", headers, body: JSON.stringify(body) });
       if (resp.ok) {
         const r = await resp.json();
         _githubSha = r.content.sha;
+        console.log("✅ ذخیره شد");
         return true;
       }
+      console.log("❌", await resp.text());
       return false;
     } catch (e) { return false; }
   }
   return true;
 }
 
+// ============================================
+// Base64 UTF-8
+// ============================================
 function encodeBase64Utf8(str) { return btoa(unescape(encodeURIComponent(str))); }
 function decodeBase64Utf8(b64) { return decodeURIComponent(escape(atob(b64.replace(/\s/g, "")))); }
 
+// ============================================
+// پیام
+// ============================================
 function flash(msg, type = "info", dur = 4000) {
   const content = document.getElementById("content");
   if (!content) return;
@@ -241,6 +260,9 @@ function flash(msg, type = "info", dur = 4000) {
   setTimeout(() => div.remove(), dur);
 }
 
+// ============================================
+// ناوبری
+// ============================================
 function showPage(page) {
   const content = document.getElementById("content");
   content.innerHTML = "";
@@ -253,6 +275,9 @@ function showPage(page) {
   window.scrollTo(0, 0);
 }
 
+// ============================================
+// خانه
+// ============================================
 function renderHome() {
   document.getElementById("content").innerHTML = `
     <div class="card hero">
@@ -289,6 +314,9 @@ function setToken() {
   }
 }
 
+// ============================================
+// لیست بازی‌ها
+// ============================================
 function renderBrowse() {
   const content = document.getElementById("content");
   const apps = [...DATA.apps].reverse();
@@ -325,12 +353,15 @@ function appCardHTML(a) {
         <p>${escapeHtml(a.description || "بدون توضیح")}</p>
         ${badge}
         <br>
-        <button class="btn btn-small" onclick="downloadApp('${a.id}')">⬇️ دانلود</button>
+        <button class="btn btn-small" onclick="downloadApp('${a.id}')">⬇️ دانلود (ZIP)</button>
       </div>
     </div>
   `;
 }
 
+// ============================================
+// گیت رمز آپلود
+// ============================================
 function renderUploadGate() {
   const content = document.getElementById("content");
   if (DATA.uploadUnlocked) { renderUploadForm(); return; }
@@ -361,6 +392,9 @@ function checkPassword() {
   }
 }
 
+// ============================================
+// فرم آپلود
+// ============================================
 function renderUploadForm() {
   document.getElementById("content").innerHTML = `
     <div class="card">
@@ -374,7 +408,7 @@ function renderUploadForm() {
       <input id="upIcon" type="file" accept="image/*">
 
       <label>توضیح (اختیاری)</label>
-      <textarea id="upDesc" rows="3"></textarea>
+      <textarea id="upDesc" rows="3" placeholder="توضیح کوتاه..."></textarea>
 
       <label>فایل بازی *</label>
       <input id="upFile" type="file">
@@ -455,20 +489,81 @@ async function doUpload() {
   }
 }
 
-function downloadApp(appId) {
+// ============================================
+// دانلود ZIP ✨ (تغییر اصلی)
+// ============================================
+async function downloadApp(appId) {
   const a = DATA.apps.find(x => x.id === appId);
-  if (!a) { flash("پیدا نشد", "error"); return; }
+  if (!a) { flash("بازی پیدا نشد", "error"); return; }
+
   const fileData = DATA.files[a.file];
-  if (!fileData) { flash("فایل نیست", "error"); return; }
-  const link = document.createElement("a");
-  link.href = fileData;
-  link.download = a.fileName || a.name;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  flash("دانلود شروع شد ✅", "success");
+  const iconData = DATA.files[a.icon];
+
+  if (!fileData) { flash("فایل پیدا نشد", "error"); return; }
+
+  flash("در حال ساخت ZIP... صبر کن", "info", 5000);
+
+  try {
+    const zip = new JSZip();
+
+    // ۱. فایل اصلی بازی
+    const fileBase64 = fileData.split(",")[1];
+    const fileName = a.fileName || (a.name + "." + (a.fileExt || "bin"));
+    zip.file(fileName, fileBase64, { base64: true });
+
+    // ۲. عکس بازی
+    if (iconData) {
+      const iconBase64 = iconData.split(",")[1];
+      const m = iconData.match(/data:image\/(\w+)/);
+      const ext = m ? m[1] : "png";
+      zip.file("icon." + ext, iconBase64, { base64: true });
+    }
+
+    // ۳. فایل راهنما
+    const readme =
+`=====================================
+نام بازی: ${a.name}
+توضیحات: ${a.description || "بدون توضیح"}
+پلتفرم: ${a.platform === "android" ? "اندروید" : "کامپیوتر"}
+تاریخ انتشار: ${new Date(a.created).toLocaleString("fa-IR")}
+=====================================
+
+محتوای این پکیج:
+- ${fileName}
+- icon.*
+- راهنما.txt
+
+نحوه استفاده:
+${a.platform === "android"
+  ? "۱. فایل APK رو روی گوشی نصب کن\n۲. اگه اجازه نصب خواست، اجازه بده"
+  : "۱. اگه .py هست: با python اجرا کن\n۲. اگه .pyw هست: دوبار کلیک کن\n۳. اگه .exe هست: دوبار کلیک کن\n۴. اگه .cpp یا .c هست: با کامپایلر کامپایل کن"
 }
 
+موفق باشی!
+ساخته شده توسط Adrian
+`;
+    zip.file("راهنما.txt", readme);
+
+    // ۴. ساخت و دانلود ZIP
+    const blob = await zip.generateAsync({ type: "blob" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = (a.name || "game") + ".zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+
+    flash("ZIP دانلود شد ✅", "success");
+  } catch (e) {
+    console.log(e);
+    flash("خطا در ساخت ZIP", "error");
+  }
+}
+
+// ============================================
+// کمکی
+// ============================================
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -484,6 +579,9 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+// ============================================
+// شروع
+// ============================================
 (async function init() {
   await loadData();
   showPage("home");
